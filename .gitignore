@@ -1,7 +1,13 @@
+__pycache__/
+
 # API Credentials
 *credentials.json
 
 # Google token
 *token.pickle
 
+# Tasks database
+*todo.db
+
+# Files currently opened
 *~

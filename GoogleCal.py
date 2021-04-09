@@ -8,6 +8,7 @@ import os.path
 from datetime import datetime, time, timedelta, date
 from tkinter import messagebox
 
+from pprint import pprint
 """
 Reference: 
 https://medium.com/pizzas/integrating-google-calendar-api-in-python-projects-ce74989cfaee
@@ -123,12 +124,13 @@ def get_busy_events() -> list:
     if not all_events:
         return []
     for event in all_events:
-        if "date" in event["start"] or "date" in event["end"]:
-            continue
+        if "date" in event["start"] or "date" in event["end"]: continue
         # Convert to datetime objects
         start = event["start"]["dateTime"][:-(len("-6:00")+1)]
         end = event["end"]["dateTime"][:-(len("-6:00")+1)]
         all_times[start] = end
+
     # Sort from earliest start datetime to latest
-    ordered_times = sorted(all_times.items(), key = lambda x:datetime.strptime(x[0], "%Y-%m-%dT%H:%M:%S"))
+    ordered_times = sorted(filter(lambda x: len(x[0])==19, all_times.items()), key = lambda x:datetime.strptime(x[0], "%Y-%m-%dT%H:%M:%S"))
+    pprint(ordered_times)
     return [(datetime.strptime(start, "%Y-%m-%dT%H:%M:%S"), datetime.strptime(end, "%Y-%m-%dT%H:%M:%S")) for start,end in ordered_times]
