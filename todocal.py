@@ -5,18 +5,6 @@ from datetime import *
 import sqlite3 as sq
 import GoogleCal
 
-"""
-Ideas:
-- extended selection
-- two listboxes with input tasks and scehduled tasks in another color font
-    - seperate sign-in and schedule button
-        - don't allow schedule button when not signed in
-    - transition to that from the pop out selected window
-- add the footer showing whether the user is signed in
-- change time check (default: 1 week)
-- QA test for scheduling (friday doesn't scheulde past the weeeknd problem?)
-"""
-
 class Scheduler(tk.Frame):
     def __init__(self, root, task):
         tk.Frame.__init__(self, root)
@@ -219,6 +207,24 @@ class MainApp(tk.Frame):
         self.oldTasks = []
         self.oldIndex = 0
 
+    def new_settings(self):
+        self.settingsWindow = tk.Toplevel(self.root)
+        self.settingsWindow.title("Scheduler Settings")
+        self.settingsWindow.geometry("400x200")
+        # Configure time length
+        # self.new_bio_entry = tk.Entry(self.settingsWindow, width=50)
+        # self.new_bio_entry.pack()
+        # ! convert this to # of weeks / week label
+        self.start_hour = ttk.Spinbox(master=settingsWindow, from_=1,to=4, wrap=True, width=5, state="readonly")
+        self.start_hour.set(1)
+        self.start_hour.pack(padx=5)
+        self.start_min = ttk.Spinbox(master=settingsWindow, from_=0,to=59, wrap=True, width=3, state="readonly")
+        self.start_min.set(0)
+        self.start_min.pack(side=tk.LEFT, padx=5)
+        # Confirm button
+        self.change_bio_btn = tk.Button(self.settingsWindow, text="Update bio", width=25, command=self.save_bio)
+        self.change_bio_btn.pack(pady=5)
+
     def _draw(self):
         menu_bar = tk.Menu(self.root)
         self.root['menu'] = menu_bar
@@ -227,9 +233,8 @@ class MainApp(tk.Frame):
         # Change from 1 week to up to 1 month
         # ! time settings
 
-
         # Change from all tasks in description to single select task and make that the title
-        menu_settings.add_command(label="Schedule Preferences")
+        menu_settings.add_command(label="Schedule Preferences", command = lambda x: x)
 
         # Add buttons
         buttonFrame = tk.Frame(master=self.root, width=50)
