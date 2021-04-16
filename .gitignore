@@ -3,6 +3,9 @@ __pycache__/
 # API Credentials
 *credentials.json
 
+# User's access and refresh tokens
+*token.json
+
 # Google token
 *token.pickle
 
