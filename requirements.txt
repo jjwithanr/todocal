@@ -1,4 +1,6 @@
 google-api-python-client
 google-oauth
+google-auth-httplib2
+google-auth-oauthlib
 pysqlite3
 datetime
