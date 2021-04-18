@@ -132,5 +132,4 @@ def get_busy_events() -> list:
 
     # Sort from earliest start datetime to latest
     ordered_times = sorted(filter(lambda x: len(x[0])==19, all_times.items()), key = lambda x:datetime.strptime(x[0], "%Y-%m-%dT%H:%M:%S"))
-    pprint(ordered_times)
     return [(datetime.strptime(start, "%Y-%m-%dT%H:%M:%S"), datetime.strptime(end, "%Y-%m-%dT%H:%M:%S")) for start,end in ordered_times]

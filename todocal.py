@@ -160,7 +160,6 @@ class MainApp(tk.Frame):
     def delOne(self):
         try:
             val = self.view.viewTasks.get(self.view.viewTasks.curselection())
-            print("TEST TEST ***", val)
             if val in self.task:
                 self.oldTasks.append(val)
                 self.task.remove(val)
