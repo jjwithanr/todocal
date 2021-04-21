@@ -4,9 +4,14 @@ from googleapiclient.discovery import build
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
+from collections import defaultdict
+
 
 # If modifying these scopes, delete the file token.json.
 SCOPES = ['https://www.googleapis.com/auth/tasks.readonly']
+
+# Import tasks lists in form of dictinoary
+tasks = defaultdict(list)
 
 def main():
     """Shows basic usage of the Tasks API.
@@ -35,6 +40,7 @@ def main():
     # Call the Tasks API
     results = service.tasklists().list(maxResults=10).execute()
     items = results.get('items', [])
+    taskLists = dict()
 
     if not items:
         print('No task lists found.')
@@ -42,14 +48,20 @@ def main():
         print('Task lists:')
         for item in items:
             identifier = item['id']
+            taskLists[item['title']] = identifier 
             print(u'{0} ({1})'.format(item['title'], item['id']))
 
     print("\nTasks:")
-    myTasks = service.tasks().list(tasklist=identifier).execute()
-    todos = myTasks.get("items", [])
-    for item in todos:
-        print(u'{0} ({1})'.format(item['title'], item['id']))
+    for name, identity in taskLists.items():
+        print("\n" + name + ":")
+        myTasks = service.tasks().list(tasklist=identity).execute()
+        todos = myTasks.get("items", [])
+        for item in todos:
+            tasks[name].append((item['title'],item['id']))
+            print(u'{0} ({1})'.format(item['title'], item['id']))
 
 
 if __name__ == '__main__':
     main()
+    from pprint import pprint
+    pprint(tasks)
